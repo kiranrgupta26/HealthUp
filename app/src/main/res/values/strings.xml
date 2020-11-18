@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Health-Up</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+    <string-array name="doctor_specialisation">
+        <item>Dermatologists</item>
+        <item>Ophthalmologists</item>
+        <item>Cardiologists</item>
+        <item>Endocrinologists</item>
+        <item>Gastroenterologists</item>
+        <item>Nephrologists</item>
+        <item>Urologists</item>
+        <item>Pulmonologists</item>
+    </string-array>
+
+    <string-array name="doctor_location">
+        <item>Arlington</item>
+        <item>Dallas</item>
+        <item>Houston</item>
+        <item>Austin</item>
+        <item>California</item>
+        <item>New York</item>
+        <item>New Jersey</item>
+    </string-array>
+    <string name="title_activity_patient_appointments">PatientAppointments</string>
+</resources>
