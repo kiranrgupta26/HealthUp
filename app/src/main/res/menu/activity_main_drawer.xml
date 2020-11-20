@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:title="Search Doctor" />
         <item
             android:id="@+id/nav_mydetails"
             android:icon="@drawable/ic_menu_slideshow"
@@ -16,6 +16,10 @@
             android:id="@+id/nav_myappointment"
             android:icon="@drawable/ic_menu_gallery"
             android:title="My Appointments" />
+        <item
+            android:id="@+id/nav_donor"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Donote Plasma" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_menu_slideshow"

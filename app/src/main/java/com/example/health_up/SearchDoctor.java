@@ -52,7 +52,6 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
                 R.array.doctor_specialisation, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         specialisation.setAdapter(adapter);
-
         
         ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(this,
                 R.array.doctor_location, android.R.layout.simple_spinner_item);
@@ -77,7 +76,6 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
                 displayDoctors.setLayoutManager(mLayoutManager);
                 displayDoctors.setItemAnimator(new DefaultItemAnimator());
                 displayDoctors.setAdapter(mAdapter);
-
             }
         });
 
@@ -119,6 +117,11 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
                 if (id==R.id.nav_mydetails)
                 {
                     Intent intent1 = new Intent(getApplicationContext(),PatientDetails.class);
+                    startActivity(intent1);
+                }
+                if(id==R.id.nav_donor)
+                {
+                    Intent intent1 = new Intent(getApplicationContext(),RegisterDonor.class);
                     startActivity(intent1);
                 }
                 return false;

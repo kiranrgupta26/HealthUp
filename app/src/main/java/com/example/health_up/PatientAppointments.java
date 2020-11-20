@@ -56,6 +56,11 @@ public class PatientAppointments extends AppCompatActivity {
                     Intent intent1 = new Intent(getApplicationContext(),DoctorDetails.class);
                     startActivity(intent1);
                 }
+                if(id==R.id.nav_scheduleApp)
+                {
+                    Intent intent1 = new Intent(getApplicationContext(),DoctorSetAppointments.class);
+                    startActivity(intent1);
+                }
                 return false;
             }
         });

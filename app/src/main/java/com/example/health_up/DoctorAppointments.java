@@ -17,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +35,7 @@ public class DoctorAppointments extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_appointments);
 
-        final GridView displayTime = (GridView)findViewById(R.id.displayTime);
+        final GridView displayTime = (GridView)findViewById(R.id.displayday);
         ArrayList<String> time = new ArrayList<>();
         final ColorDrawable[] colors = {
                 new ColorDrawable(Color.GREEN), // Animation starting color

@@ -17,16 +17,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <GridView
-        android:id="@+id/displayTime"
+        android:id="@+id/displayday"
         android:layout_width="325dp"
         android:layout_height="233dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
         android:layout_marginTop="32dp"
         android:horizontalSpacing="10dp"
         android:numColumns="2"
         android:textAlignment="center"
         android:verticalSpacing="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
