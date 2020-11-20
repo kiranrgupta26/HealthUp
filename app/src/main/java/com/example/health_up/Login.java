@@ -50,6 +50,9 @@ public class Login extends AppCompatActivity {
                 if(dbMgr.isUserExists(username))
                 {
                     String password = dbMgr.getUserPasssword(username);
+                    int patientid = dbMgr.getPatientID(username);
+                    prefs = getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE);
+                    prefs.edit().putString("patientid",String.valueOf(patientid)).commit();
                     if(password.equals(pass))
                     {
                         Intent intent = new Intent(getApplicationContext(),SearchDoctor.class);

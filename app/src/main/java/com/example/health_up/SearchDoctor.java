@@ -1,6 +1,8 @@
 package com.example.health_up;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onDoctorListner {
+    public static final String MyPREFERENCES = "MyPrefs";
 
     private AppBarConfiguration mAppBarConfiguration;
     private List<Doctor> doctorList = new ArrayList<>();
@@ -81,6 +84,7 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         displayDoctors.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(getApplicationContext(),DoctorAppointments.class);
                 startActivity(intent);
             }
@@ -169,6 +173,11 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
 
     @Override
     public void onDoctorClick(int position) {
+        Doctor doctor = doctorList.get(position);
+        DBMgr dbMgr = new DBMgr(getApplicationContext());
+        int doctorid = dbMgr.getDoctorID(doctor.getFirstname());
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        prefs.edit().putString("patientid",String.valueOf(doctorid)).commit();
         Intent intent = new Intent(getApplicationContext(),DoctorAppointments.class);
         startActivity(intent);
     }

@@ -32,26 +32,25 @@
 
     <Button
         android:id="@+id/btnRegisterDoctor"
-        android:layout_width="218dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="56dp"
-        android:text="Register as Doctor"
-        android:background="#35e85c"
-        android:textColor="#ffffff"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="282dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="20dp"
+        android:text="New Doctor? Register here"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     <Button
         android:id="@+id/btnRegisterPatient"
-        android:layout_width="218dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="4dp"
-        android:text="Register as Patient"
-        android:background="#069625"
-        android:textColor="#ffffff"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="281dp"
+        android:layout_height="41dp"
+        android:text="New User? Register here"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.507"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnRegisterDoctor" />
 

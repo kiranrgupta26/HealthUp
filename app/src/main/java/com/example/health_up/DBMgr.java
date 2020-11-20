@@ -8,13 +8,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.DatabaseUtils;
 import androidx.annotation.Nullable;
 
+import java.util.Date;
 import java.util.ArrayList;
+
 import java.util.List;
 
 public class DBMgr extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 4;
-    private static final String DATABASE_NAME = "healthupDB1";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "healthupDB2";
 
     private static final String TABLE_USERS = "users";
     private static final String KEY_ID = "userid";
@@ -37,6 +39,15 @@ public class DBMgr extends SQLiteOpenHelper {
     private static final String KEY_LOCATION = "location";
     private static final String KEY_EXPERIENCE = "experience";
 
+
+    private static final String TABLE_BOOK_APPOINTMENTS = "bookappointments";
+    private static final String KEY_APPOINTMENT_ID = "id";
+    private static final String KEY_DOC_ID = "doctorid";
+    private static final String KEY_PAT_ID = "userid";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_ISCANCELLED = "iscancelled";
+    private static final String KEY_ISCLOSED = "isclosed";
+
     public DBMgr(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -51,8 +62,13 @@ public class DBMgr extends SQLiteOpenHelper {
                 + KEY_DID + " INTEGER PRIMARY KEY," + KEY_DFNAME + " TEXT,"
                 + KEY_DLNAME + " TEXT," + KEY_DEMAIL + " TEXT," + KEY_DMOBILE + " TEXT," +  KEY_LICENSE + " TEXT," + KEY_SPECIALISATION + " TEXT," + KEY_LOCATION + " TEXT," + KEY_EXPERIENCE+ " TEXT," + KEY_DPASSWORD+" TEXT" +")";
 
+        String CREATE_BOOK_APPOINTMENTS_TABLE = "CREATE TABLE " + TABLE_BOOK_APPOINTMENTS + "("
+                + KEY_APPOINTMENT_ID + " INTEGER PRIMARY KEY," + KEY_DOC_ID + " INTEGER,"
+                + KEY_PAT_ID + " INTEGER," + KEY_DATE + " DATETIME," + KEY_ISCLOSED + " INTEGER," + KEY_ISCANCELLED+" INTEGER" +")";
+
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_DOCTOR_TABLE);
+        db.execSQL(CREATE_BOOK_APPOINTMENTS_TABLE);
     }
 
     @Override
@@ -60,6 +76,8 @@ public class DBMgr extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS );
         onCreate(db);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DOCTORS );
+        onCreate(db);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOK_APPOINTMENTS );
         onCreate(db);
     }
 
@@ -124,6 +142,20 @@ public class DBMgr extends SQLiteOpenHelper {
         return doctid;
     }
 
+    public int getPatientID(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_USERS, new String[] { KEY_ID
+                }, KEY_FNAME + "=?",
+                new String[] { String.valueOf(username) }, null, null, null, null);
+
+        if (cursor != null)
+        {
+            cursor.moveToFirst();
+        }
+        int patientid= cursor.getInt(0);
+        return patientid;
+    }
+
     public void updateDoctorDetails(Doctor doctor,int doctorid)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -158,14 +190,13 @@ public class DBMgr extends SQLiteOpenHelper {
         String query="Select * from "+TABLE_DOCTORS +" where "+KEY_LOCATION+" ='"+location+"' AND "+KEY_SPECIALISATION+"='"+specialisation+"'";
         Cursor cursor = db.rawQuery(query,null);
         int count = cursor.getCount();
-        System.out.println("Count is "+count);
         if (cursor != null)
         {
             cursor.moveToFirst();
         }
         for(int i=0;i<count;i++)
         {
-            System.out.println(cursor.getString(1)+cursor.getString(6)+cursor.getString(7));
+
             Doctor doctor = new Doctor(cursor.getString(1),cursor.getString(6),cursor.getString(7));
             all_doctors.add(doctor);
             if (cursor != null)
@@ -174,6 +205,17 @@ public class DBMgr extends SQLiteOpenHelper {
             }
         }
         return  all_doctors;
+    }
+
+    public void addPatientsAppointments(int patientid, int doctorid, Date date)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_DOC_ID,doctorid);
+        cv.put(KEY_PAT_ID,patientid);
+        cv.put(KEY_DATE, String.valueOf(date));
+        db.insert(TABLE_BOOK_APPOINTMENTS, null, cv);
+        db.close();
     }
     public void getData()
     {
@@ -184,6 +226,28 @@ public class DBMgr extends SQLiteOpenHelper {
         String password = resultSet.getString(1);
     }
 
+    public List<String> getPatientsAppointments(int doctorid)
+    {
+        List<String> all_patients = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "Select * from bookappointments where doctorid="+doctorid;
+        Cursor cursor = db.rawQuery(query,null);
+        int count = cursor.getCount();
+        if (cursor != null)
+        {
+            cursor.moveToFirst();
+        }
+        for(int i=0;i<count;i++)
+        {
+            all_patients.add(String.valueOf(cursor.getInt(2)));
+            if (cursor != null)
+            {
+                cursor.moveToNext();
+            }
+        }
+        db.close();
+        return  all_patients;
+    }
     public boolean isUserExists(String username)
     {
         SQLiteDatabase db = this.getReadableDatabase();
