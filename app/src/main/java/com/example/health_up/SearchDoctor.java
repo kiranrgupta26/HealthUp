@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -41,8 +41,8 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Spinner specialisation = findViewById(R.id.specialisation);
-        Spinner location = findViewById(R.id.location);
+        final Spinner specialisation = findViewById(R.id.specialisation);
+        final Spinner location = findViewById(R.id.location);
         Button searchDoctor = findViewById(R.id.btnsearch);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -57,20 +57,26 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         location.setAdapter(adapter1);
 
         displayDoctors = findViewById(R.id.display_doctors);
-        mAdapter = new DoctorAdapter(getApplicationContext(),doctorList,this);
+        /*mAdapter = new DoctorAdapter(getApplicationContext(),doctorList,this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         displayDoctors.setLayoutManager(mLayoutManager);
         displayDoctors.setItemAnimator(new DefaultItemAnimator());
-        displayDoctors.setAdapter(mAdapter);
-
+        displayDoctors.setAdapter(mAdapter);*/
 
         searchDoctor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                displayDoctors();
+                DBMgr dbMgr = new DBMgr(getApplicationContext());
+                System.out.println(specialisation.getSelectedItem().toString()+location.getSelectedItem().toString());
+                doctorList =  dbMgr.getDoctors(specialisation.getSelectedItem().toString(),location.getSelectedItem().toString());
+                mAdapter = new DoctorAdapter(getApplicationContext(),doctorList,SearchDoctor.this);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                displayDoctors.setLayoutManager(mLayoutManager);
+                displayDoctors.setItemAnimator(new DefaultItemAnimator());
+                displayDoctors.setAdapter(mAdapter);
+
             }
         });
-
 
         displayDoctors.setOnClickListener(new View.OnClickListener() {
             @Override

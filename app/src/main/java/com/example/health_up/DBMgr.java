@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.DatabaseUtils;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBMgr extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 4;
@@ -79,7 +82,7 @@ public class DBMgr extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(KEY_DFNAME, doctor.getFirstname()); // Contact Name
+        values.put(KEY_DFNAME, doctor.getFirstname());
         values.put(KEY_DLNAME, doctor.getLastname());
         values.put(KEY_DEMAIL, doctor.getEmail());
         values.put(KEY_DMOBILE, doctor.getMobile());
@@ -89,6 +92,7 @@ public class DBMgr extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_DOCTORS, null, values);
         db.close();
+
     }
 
     public String getDoctorPassword(String username){
@@ -105,6 +109,32 @@ public class DBMgr extends SQLiteOpenHelper {
         return password;
     }
 
+    public int getDoctorID(String username){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(TABLE_DOCTORS, new String[] { KEY_DID
+                }, KEY_DFNAME + "=?",
+                new String[] { String.valueOf(username) }, null, null, null, null);
+
+        if (cursor != null)
+        {
+            cursor.moveToFirst();
+
+        }
+        int doctid= cursor.getInt(0);
+        return doctid;
+    }
+
+    public void updateDoctorDetails(Doctor doctor,int doctorid)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_LOCATION,doctor.getLocation());
+        cv.put(KEY_SPECIALISATION,doctor.getSpecialisation());
+        cv.put(KEY_EXPERIENCE,doctor.getExperience());
+        db.update(TABLE_DOCTORS,cv,"doctorid="+doctorid,null);
+        db.close();
+
+    }
     public String getUserPasssword(String username)
     {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -120,6 +150,31 @@ public class DBMgr extends SQLiteOpenHelper {
         return password;
     }
 
+    public List<Doctor> getDoctors(String specialisation,String location)
+    {
+        List<Doctor> all_doctors = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query="Select * from "+TABLE_DOCTORS +" where "+KEY_LOCATION+" ='"+location+"' AND "+KEY_SPECIALISATION+"='"+specialisation+"'";
+        Cursor cursor = db.rawQuery(query,null);
+        int count = cursor.getCount();
+        System.out.println("Count is "+count);
+        if (cursor != null)
+        {
+            cursor.moveToFirst();
+        }
+        for(int i=0;i<count;i++)
+        {
+            System.out.println(cursor.getString(1)+cursor.getString(6)+cursor.getString(7));
+            Doctor doctor = new Doctor(cursor.getString(1),cursor.getString(6),cursor.getString(7));
+            all_doctors.add(doctor);
+            if (cursor != null)
+            {
+                cursor.moveToNext();
+            }
+        }
+        return  all_doctors;
+    }
     public void getData()
     {
         SQLiteDatabase db = this.getReadableDatabase();

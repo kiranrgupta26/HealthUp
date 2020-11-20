@@ -75,5 +75,9 @@ public class Doctor {
         this.specialisation = specialisation;
         this.location = location;
     }
+    public Doctor()
+    {
+
+    }
 
 }

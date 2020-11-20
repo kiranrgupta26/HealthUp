@@ -2,15 +2,19 @@ package com.example.health_up;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
-
+    private SharedPreferences prefs;
+    public static final String MyPREFERENCES = "MyPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,9 @@ public class Login extends AppCompatActivity {
                 else if(dbMgr.isDoctorExists(username))
                 {
                     String password = dbMgr.getDoctorPassword(username);
+                    int doctorid = dbMgr.getDoctorID(username);
+                    prefs = getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE);
+                    prefs.edit().putString("doctorid",String.valueOf(doctorid)).commit();
                     if(password.equals(pass))
                     {
                         Intent intent = new Intent(getApplicationContext(),PatientAppointments.class);
