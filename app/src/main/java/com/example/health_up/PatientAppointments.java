@@ -12,9 +12,14 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.http.SslCertificate;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -33,9 +38,28 @@ public class PatientAppointments extends AppCompatActivity {
 
         SharedPreferences sharedpreferences = getSharedPreferences(Login.MyPREFERENCES, Context.MODE_PRIVATE);
         int doctor_id = Integer.parseInt(sharedpreferences.getString("doctorid","0"));
-        DBMgr dbMgr = new DBMgr(getApplicationContext());
-        List<String> allpatients = dbMgr.getPatientsAppointments(doctor_id);
 
+        final DBMgr dbMgr = new DBMgr(getApplicationContext());
+        System.out.println("Doctor id is "+doctor_id);
+        final List<String> allpatients = dbMgr.getPatientsAppointments(doctor_id);
+
+        ArrayAdapter<String> itemsAdapter =
+                new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allpatients);
+
+        ListView listView = (ListView) findViewById(R.id.display_donors);
+        listView.setAdapter(itemsAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String p = allpatients.get(position);
+                System.out.println("ID is "+p);
+                int p_id = dbMgr.getPatientID(p);
+                Intent intent = new Intent(getApplicationContext(),DisplayBookedPatient.class);
+                intent.putExtra("patientid", p_id);
+                startActivity(intent);
+            }
+        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout_patient);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -60,6 +84,19 @@ public class PatientAppointments extends AppCompatActivity {
                 {
                     Intent intent1 = new Intent(getApplicationContext(),DoctorSetAppointments.class);
                     startActivity(intent1);
+                }
+                if(id==R.id.nav_searchdonor)
+                {
+                    Intent intent1 = new Intent(getApplicationContext(),SearchDonor.class);
+                    startActivity(intent1);
+                }
+                if(id==R.id.nav_logout)
+                {
+                    Intent intent = new Intent(PatientAppointments.this,
+                            Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
                 }
                 return false;
             }

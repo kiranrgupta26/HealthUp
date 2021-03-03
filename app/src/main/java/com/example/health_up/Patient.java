@@ -6,7 +6,35 @@ public class Patient {
     String email;
     String mobile;
     String password;
-    public Patient(String firstName,String lastName,String email,String mobile,String password)
+    String address;
+    String blood_group;
+    String symtoms;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBlood_group() {
+        return blood_group;
+    }
+
+    public void setBlood_group(String blood_group) {
+        this.blood_group = blood_group;
+    }
+
+    public String getSymtoms() {
+        return symtoms;
+    }
+
+    public void setSymtoms(String symtoms) {
+        this.symtoms = symtoms;
+    }
+
+    public Patient(String firstName, String lastName, String email, String mobile, String password)
     {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -15,6 +43,10 @@ public class Patient {
         this.password = password;
     }
 
+    public Patient()
+    {
+
+    }
     public String getFirstName() {
         return firstName;
     }

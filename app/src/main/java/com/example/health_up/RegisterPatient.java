@@ -2,17 +2,21 @@ package com.example.health_up;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 public class RegisterPatient extends AppCompatActivity {
-
+    private SharedPreferences prefs;
+    public static final String MyPREFERENCES = "MyPrefs";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getSupportActionBar().hide();
         setContentView(R.layout.activity_register_patient);
 
         final EditText firstName = (EditText)findViewById(R.id.etFirstName);
@@ -30,6 +34,9 @@ public class RegisterPatient extends AppCompatActivity {
                 DBMgr dbMgr = new DBMgr(getApplicationContext());
                 dbMgr.addUserDB(patient);
 
+                int patientid = dbMgr.getPatientID(firstName.getText().toString());
+                prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                prefs.edit().putString("patientid",String.valueOf(patientid)).commit();
                 Intent intent = new Intent(getApplicationContext(),SearchDoctor.class);
                 startActivity(intent);
             }

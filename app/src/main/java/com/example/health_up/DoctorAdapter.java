@@ -1,13 +1,10 @@
 package com.example.health_up;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +32,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.MyViewHold
             super(itemView);
             doctorname = (TextView) itemView.findViewById(R.id.doctorname);
             specialisation = (TextView)itemView.findViewById(R.id.Specialist);
-            location = (TextView)itemView.findViewById(R.id.location);
+            location = (TextView)itemView.findViewById(R.id.sp_bloodgroup);
             this.onDoctorListner = onDoctorListner;
             itemView.setOnClickListener(this);
 

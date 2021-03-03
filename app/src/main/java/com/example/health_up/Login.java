@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,6 +19,9 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.getSupportActionBar().hide();
+
         setContentView(R.layout.activity_login);
 
         final EditText userName = (EditText)findViewById(R.id.etUserName);
@@ -44,11 +48,10 @@ public class Login extends AppCompatActivity {
                 String username = userName.getText().toString();
                 String pass = password.getText().toString();
                 DBMgr dbMgr = new DBMgr(getApplicationContext());
-                //int te = dbMgr.getRecords();
-                //String tem = String.valueOf(te);
-                //Toast.makeText(getApplicationContext(),tem,Toast.LENGTH_SHORT).show();
+
                 if(dbMgr.isUserExists(username))
                 {
+
                     String password = dbMgr.getUserPasssword(username);
                     int patientid = dbMgr.getPatientID(username);
                     prefs = getSharedPreferences(MyPREFERENCES,Context.MODE_PRIVATE);
@@ -78,6 +81,10 @@ public class Login extends AppCompatActivity {
                     {
                         Toast.makeText(getApplicationContext(),"Invalid Doctor Username Password",Toast.LENGTH_SHORT).show();
                     }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"User Name Does not Exists ",Toast.LENGTH_LONG).show();
                 }
             }
         });

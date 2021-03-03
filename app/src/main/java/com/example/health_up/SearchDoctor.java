@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -44,8 +44,8 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Spinner specialisation = findViewById(R.id.specialisation);
-        final Spinner location = findViewById(R.id.location);
+        final Spinner specialisation = findViewById(R.id.sp_location);
+        final Spinner location = findViewById(R.id.sp_bloodgroup);
         Button searchDoctor = findViewById(R.id.btnsearch);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -58,7 +58,12 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         location.setAdapter(adapter1);
 
-        displayDoctors = findViewById(R.id.display_doctors);
+        displayDoctors = findViewById(R.id.display_donors);
+
+        NavigationView navigationView1 = (NavigationView) findViewById(R.id.nav_view);
+        View hView =  navigationView1.getHeaderView(0);
+        TextView nav_user = (TextView)hView.findViewById(R.id.loginname);
+        nav_user.setText("Joey");
         /*mAdapter = new DoctorAdapter(getApplicationContext(),doctorList,this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         displayDoctors.setLayoutManager(mLayoutManager);
@@ -124,38 +129,23 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
                     Intent intent1 = new Intent(getApplicationContext(),RegisterDonor.class);
                     startActivity(intent1);
                 }
+                if(id==R.id.nav_myappointment)
+                {
+                    Intent intent = new Intent(SearchDoctor.this,
+                            MyAppointments.class);
+                    startActivity(intent);
+                }
+                if(id==R.id.nav_logout)
+                {
+                    Intent intent = new Intent(SearchDoctor.this,
+                            Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                    finish();
+                }
                 return false;
             }
         });
-    }
-
-    private void displayDoctors()
-    {
-        Doctor doctor1 = new Doctor("Doctor 1", "Specialisation", "location");
-        doctorList.add(doctor1);
-
-        Doctor doctor2 = new Doctor("Doctor 2", "Specialisation", "location");
-        doctorList.add(doctor2);
-
-        Doctor doctor3 = new Doctor("Doctor 3", "Specialisation", "location");
-        doctorList.add(doctor3);
-
-        Doctor doctor4 = new Doctor("Doctor 4", "Specialisation", "location");
-        doctorList.add(doctor4);
-
-        Doctor doctor5 = new Doctor("Doctor 5", "Specialisation", "location");
-        doctorList.add(doctor5);
-
-        Doctor doctor6 = new Doctor("Doctor 6", "Specialisation", "location");
-        doctorList.add(doctor6);
-
-        Doctor doctor7 = new Doctor("Doctor 7", "Specialisation", "location");
-        doctorList.add(doctor7);
-
-        Doctor doctor8 = new Doctor("Doctor 8", "Specialisation", "location");
-        doctorList.add(doctor8);
-
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -164,8 +154,6 @@ public class SearchDoctor extends AppCompatActivity implements DoctorAdapter.onD
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {
